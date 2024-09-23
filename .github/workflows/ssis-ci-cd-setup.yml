@@ -23,9 +23,9 @@ jobs:
 
       - name: Build ISPAC
         run: |
-          Invoke-WebRequest https://aka.ms/SSISDevOpsTools
+          Invoke-WebRequest https://aka.ms/SSISDevOpsTools -OutFile "SSISDevOpsTools.exe"
           Get-ChildItem
-          SSISDevOpsTools-1.0.0.0 -p:"SampleSSISProject\SampleSSISProject.dtproj"
+          .\SSISDevOpsTools -p:"SampleSSISProject\SampleSSISProject.dtproj"
       
 
       - name: Upload artifact
