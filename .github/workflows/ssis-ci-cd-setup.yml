@@ -37,7 +37,11 @@ jobs:
         run: |
           .\SSISDevOpsTools.exe /Q /C "/T:${{ steps.ssis-tools.outputs.ssis_tools_path }}"
           if ($LastExitCode -ne 0) { exit $LastExitCode }
-      
+  
+          - name: Add SSIS tools path to system path
+          shell: pwsh
+          run: Write-Output "${{ steps.ssis-tools.outputs.ssis_tools_path }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8NoBOM -Append
+ 
       - name: Build ISPAC
         run: .\SSISBuild.exe -p:"SampleSSISProject\SampleSSISProject.dtproj"
 
