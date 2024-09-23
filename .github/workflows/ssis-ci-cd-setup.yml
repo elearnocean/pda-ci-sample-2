@@ -24,6 +24,7 @@ jobs:
       - name: Build ISPAC
         run: |
           Invoke-WebRequest https://aka.ms/SSISDevOpsTools
+          Get-ChildItem
           SSISDevOpsTools-1.0.0.0 -p:"SampleSSISProject\SampleSSISProject.dtproj"
       
 
