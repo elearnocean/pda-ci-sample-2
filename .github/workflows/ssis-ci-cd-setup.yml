@@ -18,14 +18,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup SSIS DevOps Tools
-        uses: jonlabelle/setup-ssis-devops-tools@v1
+    #  - name: Setup SSIS DevOps Tools
+     #   uses: jonlabelle/setup-ssis-devops-tools@v1
+
+      - name: Output SSIS tools path
+        shell: pwsh
+        id: ssis-tools
+        run: |
+          $toolsPath = Join-Path -Path '${{ github.action_path }}' -ChildPath 'ssis-tools'
+          Write-Output "ssis_tools_path=$toolsPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8NoBOM -Append
 
       - name: Build ISPAC
         run: |
           Invoke-WebRequest https://aka.ms/SSISDevOpsTools -OutFile "SSISDevOpsTools.exe"
           Get-ChildItem
-          .\SSISDevOpsTools -p:"SampleSSISProject\SampleSSISProject.dtproj"
+          .\SSISDevOpsTools.exe /Q /C "/T:${{ steps.ssis-tools.outputs.ssis_tools_path }}" 
+          .\SSISBuild.exe -p:"SampleSSISProject\SampleSSISProject.dtproj"
       
 
       - name: Upload artifact
